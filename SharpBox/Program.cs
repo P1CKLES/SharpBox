@@ -221,7 +221,7 @@ namespace SharpBox
         [Option('t', "dbxToken", Required = false, HelpText = "Dropbox Access Token")]
         public string dbxToken { get; set; }
 
-        [Option('h', "dbxPath", Required = false, DefaultValue = "/test/data", HelpText = "path to dbx folder")]
+        [Option('x', "dbxPath", Required = false, DefaultValue = "/test/data", HelpText = "path to dbx folder")]
         public string dbxPath { get; set; }
 
         [Option('c', "compression", Required = false, DefaultValue = Options.Methods.Zip, HelpText = "this option lets you choose to zip or cab the folder")]
