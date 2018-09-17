@@ -23,44 +23,45 @@ These access tokens do not expire, but you can revoke them.  So I would recommen
 Example:
 
 ```
-SharpBox.exe -f "C:\Users\JasonF\Documents\management-docs" -t "DROPBOX-OATH-ACCESS-TOKEN-HERE" -c "cab" -p "SecretPassword123!"
+SharpBox.exe -f "C:\Users\JasonF\Documents\management-docs" -t "DROPBOX-OATH-ACCESS-TOKEN-HERE"
+
+SharpBox.exe -f "C:\Users\Julian\Documents\rip-docs" -t "DROPBOX-OATH-ACCESS-TOKEN-HERE" -c "Cab"
 ```
 
-SharpBox can Cab or Zip a folder of items.  Cabbing tends to compress into smaller files than zip, but has a maximum limit of 2GB.  The compressed file is then encrypted and uploaded to dropbox.
+SharpBox can Cab or Zip a folder of items.  Zip is the default compression method.  Cabbing tends to compress into smaller files than zip, but has a maximum limit of 2GB.  The compressed file is then encrypted with a randomly generated password and uploaded to dropbox.  The password is output to the console.  Copy the password and use with the "password" argument when decrypting. 
 
 ```
 SharpBox 1.0.0.0
 Copyright c  2018
 
-  -f, --path           Required. path to the folder you wish to compress the
-                       contents of
+  -f, --path                   Required. path to the folder you wish to
+                               compress the contents of
 
-  -o, --OutFile        Name of the compressed file
+  -o, --OutFile                Name of the compressed file
 
-  -t, --dbxToken       Dropbox Access Token
+  -t, --dbxToken               Dropbox Access Token
 
-  -h, --dbxPath        (Default: /test/data) path to dbx folder
+  -h, --dbxPath                (Default: /test/data) path to dbx folder
 
-  -c, --compression    this option lets you choose to zip or cab the folder
+  -c, --compression            (Default: Zip) this option lets you choose to
+                               zip or cab the folder
 
-  -d, --decrypt        (Default: False) Choose this to decrypt a zip or cabbed
-                       file previously encrypted by this tool.  Requires
-                       original password argument.
+  -d, --decrypt                (Default: False) Choose this to decrypt a zip or
+                               cabbed file previously encrypted by this tool.
+                               Requires original password argument.
 
-  -p, --password       Required. Password to encrypt or decrypt a zipped or
-                       cabbed file.
+  -p, --decryption-password    Password to decrypt a zipped or cabbed file.
 
-  --help               Display this help screen.
+  --help                       Display this help screen.
   ```
   
-  Passwords must be >= 5 characters. 
   
   Once the compressed/encrypted file is downloaded from DropBox, you can use this tool to decrypt it as well. 
   
   Example: 
   
   ```
-  SharpBox.exe -f "C:\Users\evilDude\Desktop\data" -o "decrypted-data.cab" -p "SecretPassword123!" -d
+  SharpBox.exe -f "C:\Users\evilDude\Desktop\data" -o "decrypted-data.zip" -p "RandomlyGeneratedPassword" -d
   ```
   
   
