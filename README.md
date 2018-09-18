@@ -6,15 +6,16 @@ Target Framework: NET3.5
 
 The libraries added via NuGet for this project were:
 
-**-CommandLineParser.1.9.71**
+- CommandLineParser.1.9.71
 
-**-Costura.Fody.1.6.2**
+- Costura.Fody.1.6.2
 
-**-DotNetZip.1.11.0**
+- DotNetZip.1.11.0
 
-**-Fody.2.1.2**
+- Fody.2.1.2
 
-**-MSFTCompressionCab.1.0.0**
+- MSFTCompressionCab.1.0.0
+
 
 ## Usage
 Log into your Dropbox account and head over to the [Dropbox developer API explorer](https://dropbox.github.io/dropbox-api-v2-explorer/#auth_token/from_oauth1) page and get an oauth access token by clicking "Get Token".
@@ -65,4 +66,6 @@ Usage: SharpBox <options>
   SharpBox.exe -f "C:\Users\evilDude\Desktop\data" -o "decrypted-data.zip" -p "RandomlyGeneratedPassword" -d
   ```
   
+ ## Acknowledgements
   
+ - [@CptJesus](https://twitter.com/CptJesus) for letting me borrow the password gen snippet from [SharpHound](https://github.com/BloodHoundAD/SharpHound).
