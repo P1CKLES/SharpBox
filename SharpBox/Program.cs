@@ -236,9 +236,38 @@ namespace SharpBox
         [HelpOption]
         public string GetUsage()
         {
-            var usage = new StringBuilder();
+            /*var usage = new StringBuilder();
             {
                 return HelpText.AutoBuild(this, (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+            }*/
+            {
+                var text = @"SharpBox 1.0.0
+Copyright c  2018 Pickles
+Usage: SharpBox <options>
+
+      -f, --path                   Required. path to the folder you wish to
+                                   compress the contents of
+
+      -o, --OutFile                Name of the compressed file
+
+      -t, --dbxToken               Dropbox Access Token
+
+      -h, --dbxPath                (Default: /test/data) path to dbx folder
+
+      -c, --compression            (Default: Zip) this option lets you choose to
+                                   zip or cab the folder
+
+      -d, --decrypt                (Default: False) Choose this to decrypt a zip or
+                                   cabbed file previously encrypted by this tool.
+                                   Requires original password argument.
+
+      -p, --decryption-password    Password to decrypt a zipped or cabbed file.
+
+      --help                       Display this help screen."
+;
+
+
+                return text;
             }
         }
     }
