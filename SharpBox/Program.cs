@@ -248,7 +248,7 @@ Usage: SharpBox <options>
 
       -t, --dbxToken               Dropbox Access Token
 
-      -h, --dbxPath                (Default: /test/data) path to dbx folder
+      -x, --dbxPath                (Default: /test/data) path to dbx folder
 
       -c, --compression            (Default: Zip) this option lets you choose to
                                    zip or cab the folder
