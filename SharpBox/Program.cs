@@ -236,10 +236,6 @@ namespace SharpBox
         [HelpOption]
         public string GetUsage()
         {
-            /*var usage = new StringBuilder();
-            {
-                return HelpText.AutoBuild(this, (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
-            }*/
             {
                 var text = @"SharpBox 1.0.0
 Copyright c  2018 Pickles
