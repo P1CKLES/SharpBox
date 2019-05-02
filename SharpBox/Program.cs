@@ -1,4 +1,4 @@
-﻿
+
 using Ionic.Zip;
 using System;
 using System.IO;
@@ -39,7 +39,6 @@ namespace SharpBox
 
             if (ops.compression == Options.Methods.Cab)
             {
-                ops.OutFile = "data.cab";
                 CabInfo cab = new CabInfo(Path.Combine(ops.path, ops.OutFile));
                 try
                 {
@@ -65,7 +64,6 @@ namespace SharpBox
                     ZipFile zip = new ZipFile();
                     try
                     {
-                        ops.OutFile = "data.zip";
                         Thread zipThread = new Thread(() =>
                         {
                             string[] files = Directory.GetFiles(ops.path);
@@ -109,13 +107,26 @@ namespace SharpBox
         {
             try
             {
+                string outFile;
                 string password = GeneratePass();
-                Console.WriteLine($"[*] Generated Password: {password} \n[*]Use this Password for decryption process!");
+                Console.WriteLine($"[*] Generated Password: {password} \n[*] Use this Password for decryption process!");
                 string initVector = $"HR$2pI{password.Substring(0, 5)}pIj12";
                 byte[] key = Encoding.ASCII.GetBytes(password);
                 byte[] IV = Encoding.ASCII.GetBytes(initVector);
-                //string cryptFile = ops.path + "\\data";
-                string cryptFile = Path.Combine(ops.path, "data");
+                if (ops.OutFile.Contains(".zip"))
+                {
+                    outFile = ops.OutFile.Replace(".zip", "");
+                } else
+                {
+                    if (ops.OutFile.Contains(".cab"))
+                    {
+                        outFile = ops.OutFile.Replace(".cab", "");
+                    } else
+                    {
+                        outFile = ops.OutFile;
+                    }
+                }
+                string cryptFile = Path.Combine(ops.path, outFile);
                 FileStream fsCrypt = new FileStream(cryptFile, FileMode.Create);
                 RijndaelManaged RMCrypto = new RijndaelManaged();
                 CryptoStream cs = new CryptoStream(fsCrypt, RMCrypto.CreateEncryptor(key, IV), CryptoStreamMode.Write);
@@ -135,10 +146,10 @@ namespace SharpBox
             {
                 Console.WriteLine("Encryption failed!", "Error " + e);
             }
-            if (ops.dbxToken == null) 
+            if (ops.dbxToken == null)
             {
-                
-            } else 
+
+            } else
             {
                 FileUploadToDropbox(ops);
             }
