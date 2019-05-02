@@ -135,7 +135,13 @@ namespace SharpBox
             {
                 Console.WriteLine("Encryption failed!", "Error " + e);
             }
-            FileUploadToDropbox(ops);
+            if (ops.dbxToken == null) 
+            {
+                
+            } else 
+            {
+                FileUploadToDropbox(ops);
+            }
         }
 
         private static void DecryptFile(Options ops)
