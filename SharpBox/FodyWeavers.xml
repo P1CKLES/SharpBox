@@ -4,8 +4,6 @@
     <IncludeAssemblies>
       CommandLine
       DotNetZip
-      Microsoft.Deployment.Compression.Cab
-      Microsoft.Deployment.Compression
     </IncludeAssemblies>
   </Costura>
 </Weavers>

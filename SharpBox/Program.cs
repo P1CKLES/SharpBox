@@ -1,10 +1,8 @@
-
+﻿
 using Ionic.Zip;
 using System;
 using System.IO;
 using System.Text;
-using Microsoft.Deployment.Compression.Cab;
-using Microsoft.Deployment.Compression;
 using System.Security.Cryptography;
 using System.Net;
 using System.Threading;
@@ -37,58 +35,37 @@ namespace SharpBox
                 return;
             }
 
-            if (ops.compression == Options.Methods.Cab)
-            {
-                CabInfo cab = new CabInfo(Path.Combine(ops.path, ops.OutFile));
-                try
-                {
-                    Thread cabThread = new Thread(() =>
-                    {
-                        cab.Pack(ops.path, true, Microsoft.Deployment.Compression.CompressionLevel.Max, null);
-                    });
-                    cabThread.Start();
-                    cabThread.Join();
+            // removed all cab compression functionality. zip only
 
-                    Console.WriteLine("[*] Attempting to encrypt cab file.");
-                    EncryptFile(ops);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-            }
-            else
+            ZipFile zip = new ZipFile();
+            try
             {
-                if (ops.compression == Options.Methods.Zip)
+                Thread zipThread = new Thread(() =>
                 {
-                    ZipFile zip = new ZipFile();
-                    try
+                    FileAttributes attr = File.GetAttributes(ops.path);
+                    if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
-                        Thread zipThread = new Thread(() =>
+                        string[] files = Directory.GetFiles(ops.path);
+                        foreach (string fileName in files)
                         {
-                            string[] files = Directory.GetFiles(ops.path);
-                            foreach (string fileName in files)
-                            {
-                                zip.AddFile(fileName, "archive");
-                                zip.Save(Path.Combine(ops.path, ops.OutFile));
-                            }
-                        });
-                        zipThread.Start();
-                        zipThread.Join();
-
-                        Console.WriteLine("[*] Attempting to encrypt zip file.");
-                        EncryptFile(ops);
-                    }
-                    catch (Exception e)
+                            zip.AddFile(fileName, "archive");
+                            zip.Save(ops.OutFile);
+                        }
+                    } else
                     {
-                        Console.WriteLine(e.ToString());
-                    }
+                        zip.AddFile(ops.path, "archive");
+                        zip.Save(ops.OutFile);
+                    } 
+                });
+                zipThread.Start();
+                zipThread.Join();
 
-                }
-                else
-                {
-                    return;
-                }
+                Console.WriteLine("[*] Attempting to encrypt zip file.");
+                EncryptFile(ops, zip);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
             }
         }
         private static string GeneratePass()
@@ -103,7 +80,7 @@ namespace SharpBox
             return builder.ToString();
         }
 
-        private static void EncryptFile(Options ops)
+        private static void EncryptFile(Options ops, ZipFile zip)
         {
             try
             {
@@ -126,11 +103,12 @@ namespace SharpBox
                         outFile = ops.OutFile;
                     }
                 }
-                string cryptFile = Path.Combine(ops.path, outFile);
-                FileStream fsCrypt = new FileStream(cryptFile, FileMode.Create);
+            
+                FileStream fsCrypt = new FileStream(outFile, FileMode.Create);
                 RijndaelManaged RMCrypto = new RijndaelManaged();
                 CryptoStream cs = new CryptoStream(fsCrypt, RMCrypto.CreateEncryptor(key, IV), CryptoStreamMode.Write);
-                FileStream fsIn = new FileStream((Path.Combine(ops.path, ops.OutFile)), FileMode.Open);
+                FileStream fsIn = null;
+                fsIn = new FileStream(ops.OutFile, FileMode.Open);
                 int data;
                 while ((data = fsIn.ReadByte()) != -1)
                     cs.WriteByte((byte)data);
@@ -140,7 +118,8 @@ namespace SharpBox
                 fsIn.Close();
                 cs.Close();
                 fsCrypt.Close();
-                File.Delete(Path.Combine(ops.path, ops.OutFile));
+                File.Delete(ops.OutFile);
+
             }
             catch (Exception e)
             {
@@ -241,9 +220,6 @@ namespace SharpBox
         [Option('x', "dbxPath", Required = false, DefaultValue = "/test/data", HelpText = "path to dbx folder")]
         public string dbxPath { get; set; }
 
-        [Option('c', "compression", Required = false, DefaultValue = Options.Methods.Zip, HelpText = "this option lets you choose to zip or cab the folder")]
-        public Methods compression { get; set; }
-
         [Option('d', "decrypt", Required = false, DefaultValue = false, HelpText = "Choose this to decrypt a zip or cabbed file previously encrypted by this tool.  Requires original password argument.")]
         public bool decrypt { get; set; }
 
@@ -266,9 +242,6 @@ Usage: SharpBox <options>
       -t, --dbxToken               Dropbox Access Token
 
       -x, --dbxPath                (Default: /test/data) path to dbx folder
-
-      -c, --compression            (Default: Zip) this option lets you choose to
-                                   zip or cab the folder
 
       -d, --decrypt                (Default: False) Choose this to decrypt a zip or
                                    cabbed file previously encrypted by this tool.
