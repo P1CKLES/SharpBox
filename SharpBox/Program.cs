@@ -208,7 +208,7 @@ namespace SharpBox
             Cab
         }
 
-        [Option('f', "path", Required = true, HelpText = "path to the folder you wish to compress the contents of")]
+        [Option('f', "path", Required = true, HelpText = "path to the file or folder you wish to compress the contents of")]
         public string path { get; set; }
 
         [Option('o', "OutFile", Required = false, HelpText = "Name of the compressed file")]
@@ -220,21 +220,21 @@ namespace SharpBox
         [Option('x', "dbxPath", Required = false, DefaultValue = "/test/data", HelpText = "path to dbx folder")]
         public string dbxPath { get; set; }
 
-        [Option('d', "decrypt", Required = false, DefaultValue = false, HelpText = "Choose this to decrypt a zip or cabbed file previously encrypted by this tool.  Requires original password argument.")]
+        [Option('d', "decrypt", Required = false, DefaultValue = false, HelpText = "Choose this to decrypt a zip file previously encrypted by this tool.  Requires original password argument.")]
         public bool decrypt { get; set; }
 
-        [Option('p', "decryption-password", Required = false, HelpText = "Password to decrypt a zipped or cabbed file.")]
+        [Option('p', "decryption-password", Required = false, HelpText = "Password to decrypt a zipped file.")]
         public string password { get; set; }
 
         [HelpOption]
         public string GetUsage()
         {
             {
-                var text = @"SharpBox 1.0.0
-Copyright c  2018 Pickles
+                var text = @"SharpBox 1.1.0
+Copyright c  2021 Pickles
 Usage: SharpBox <options>
 
-      -f, --path                   Required. path to the folder you wish to
+      -f, --path                   Required. Full path to the file or folder you wish to
                                    compress the contents of
 
       -o, --OutFile                Name of the compressed file
@@ -243,11 +243,10 @@ Usage: SharpBox <options>
 
       -x, --dbxPath                (Default: /test/data) path to dbx folder
 
-      -d, --decrypt                (Default: False) Choose this to decrypt a zip or
-                                   cabbed file previously encrypted by this tool.
+      -d, --decrypt                (Default: False) Choose this to decrypt a zip file previously encrypted by this tool.
                                    Requires original password argument.
 
-      -p, --decryption-password    Password to decrypt a zipped or cabbed file.
+      -p, --decryption-password    Password to decrypt a zipped file.
 
       --help                       Display this help screen."
 ;
