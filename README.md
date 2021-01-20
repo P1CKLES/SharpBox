@@ -14,8 +14,6 @@ The libraries added via NuGet for this project were:
 
 - Fody.2.1.2
 
-- MSFTCompressionCab.1.0.0
-
 
 ## Usage
 Log into your Dropbox account and head over to the [Dropbox developer API explorer](https://dropbox.github.io/dropbox-api-v2-explorer/#auth_token/from_oauth1) page and get an oauth access token by clicking "Get Token".
@@ -24,19 +22,19 @@ These access tokens do not expire, but you can revoke them.  So I would recommen
 Example:
 
 ```
-SharpBox.exe -f "C:\Users\LegendaryJasonJF\Documents\management-docs" -t "DROPBOX-OATH-ACCESS-TOKEN-HERE"
+SharpBox.exe -f "C:\Users\LegendaryJasonJF\Documents\management-docs" -t "DROPBOX-OATH-ACCESS-TOKEN-HERE" -o "C:\Users\Public\Archive.zip"
 
-SharpBox.exe -f "C:\Users\Meatball\Documents\rip-docs" -t "DROPBOX-OATH-ACCESS-TOKEN-HERE" -c "Cab"
+SharpBox.exe -f "C:\Users\Meatball\Documents\rip-doc.txt" -t "DROPBOX-OATH-ACCESS-TOKEN-HERE" -o "C:Users\Meatball\Desktop\rip.zip"
 ```
 
-SharpBox can Cab or Zip a folder of items.  Zip is the default compression method.  Cabbing tends to compress into smaller files than zip, but has a maximum limit of 2GB.  The compressed file is then encrypted with a randomly generated password and uploaded to Dropbox.  The password is output to the console.  Copy the password and use with the "password" argument when decrypting. 
+SharpBox can Zip a single file or folder of items. The compressed file is then encrypted with a randomly generated password and uploaded to Dropbox.  The password is output to the console.  Copy the password and use with the "password" argument when decrypting. 
 
 ```
-SharpBox 1.0.0
-Copyright c  2018 Pickles
+SharpBox 1.1.0
+Copyright c  2021 Pickles
 Usage: SharpBox <options>
 
-      -f, --path                   Required. path to the folder you wish to
+      -f, --path                   Required. path to the file or folder you wish to
                                    compress the contents of
 
       -o, --OutFile                Name of the compressed file
@@ -44,9 +42,6 @@ Usage: SharpBox <options>
       -t, --dbxToken               Dropbox Access Token
 
       -h, --dbxPath                (Default: /test/data) path to dbx folder
-
-      -c, --compression            (Default: Zip) this option lets you choose to
-                                   zip or cab the folder
 
       -d, --decrypt                (Default: False) Choose this to decrypt a zip or
                                    cabbed file previously encrypted by this tool.
@@ -63,7 +58,7 @@ Usage: SharpBox <options>
   Example: 
   
   ```
-  SharpBox.exe -f "C:\Users\evilDude\Desktop\data" -o "decrypted-data.zip" -p "RandomlyGeneratedPassword" -d
+  SharpBox.exe -f "C:\Users\evilDude\Desktop\data" -o "C:\Users\evilDude\Desktop\decrypted-data.zip" -p "RandomlyGeneratedPassword" -d
   ```
   
  ## Acknowledgements
